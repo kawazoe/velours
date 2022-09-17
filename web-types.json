@@ -9,11 +9,11 @@
     "html": {
       "vue-components": [
         {
-          "name": "app-promise-presenter",
+          "name": "vl-promise-presenter",
           "priority": "highest",
           "source": {
             "module": "@endeavourapp/velours",
-            "symbol": "AppPromisePresenter"
+            "symbol": "VlPromisePresenter"
           },
           "description": "Selects the right template to render an `AsyncValue` based on its status.",
           "props": [
@@ -60,11 +60,11 @@
           ]
         },
         {
-          "name": "app-binder-presenter",
+          "name": "vl-binder-presenter",
           "priority": "highest",
           "source": {
             "module": "@endeavourapp/velours",
-            "symbol": "AppBinderPresenter"
+            "symbol": "VlBinderPresenter"
           },
           "description": "Selects the right template to render a `Binder` based on its status.",
           "props": [
@@ -104,11 +104,11 @@
           ]
         },
         {
-          "name": "app-binder-page-presenter",
+          "name": "vl-binder-page-presenter",
           "priority": "highest",
           "source": {
             "module": "@endeavourapp/velours",
-            "symbol": "AppBinderPagePresenter"
+            "symbol": "VlBinderPagePresenter"
           },
           "description": "Selects the right template to render an `AsyncPage` based on its status.",
           "props": [

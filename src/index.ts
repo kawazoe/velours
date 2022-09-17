@@ -1,6 +1,6 @@
-import AppBinderPagePresenter from '@/components/AppBinderPagePresenter';
-import AppBinderPresenter from '@/components/AppBinderPresenter';
-import AppPromisePresenter from '@/components/AppPromisePresenter';
+import VlBinderPagePresenter from '@/components/VlBinderPagePresenter';
+import VlBinderPresenter from '@/components/VlBinderPresenter';
+import VlPromisePresenter from '@/components/VlPromisePresenter';
 
 import { useEnumerableBinder, useIndexableBinder } from '@/composables/binders';
 import { useIntersectionObserver } from '@/composables/intersectionObservers';
@@ -12,9 +12,9 @@ import { definePromiseStore } from '@/stores/promiseStore';
 import * as Bookmarks from '@/bookmarks';
 
 export {
-  AppBinderPagePresenter,
-  AppBinderPresenter,
-  AppPromisePresenter,
+  VlBinderPagePresenter,
+  VlBinderPresenter,
+  VlPromisePresenter,
   useEnumerableBinder,
   useIndexableBinder,
   useIntersectionObserver,

@@ -3,7 +3,7 @@ import type { PropType, Slot, Slots, VNode } from 'vue';
 
 import type { AsyncPage, AsyncPageStatus, BinderStatus } from '@/composables/binders';
 
-const undefinedSlot = (status: BinderStatus | AsyncPageStatus) => (): VNode[] => [createCommentVNode(`app-binder-page-presenter:unresolved-slot-mapping:${status}`)];
+const undefinedSlot = (status: BinderStatus | AsyncPageStatus) => (): VNode[] => [createCommentVNode(`vl-binder-page-presenter:unresolved-slot-mapping:${status}`)];
 function pickSlot(status: AsyncPageStatus, slots: Slots): Slot {
   switch (status) {
     case 'loading':
@@ -24,7 +24,7 @@ function pickSlot(status: AsyncPageStatus, slots: Slots): Slot {
 }
 
 export default defineComponent({
-  name: 'AppBinderPagePresenter',
+  name: 'VlBinderPagePresenter',
   props: {
     value: {
       type: Object as PropType<AsyncPage<unknown>>,

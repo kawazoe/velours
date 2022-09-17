@@ -4,7 +4,7 @@ import type { PropType, Slot, Slots, VNode } from 'vue';
 import type { PromiseAdapter, PromiseStatus } from '@/composables/promises';
 import type { PromiseStore } from '@/stores/promiseStore';
 
-const undefinedSlot = (status: PromiseStatus) => (): VNode[] => [createCommentVNode(`app-promise-presenter:unresolved-slot-mapping:${status}`)];
+const undefinedSlot = (status: PromiseStatus) => (): VNode[] => [createCommentVNode(`vl-promise-presenter:unresolved-slot-mapping:${status}`)];
 const pickSlot = (status: PromiseStatus, slots: Slots): Slot => {
   switch (status) {
     case 'initial':
@@ -27,7 +27,7 @@ const pickSlot = (status: PromiseStatus, slots: Slots): Slot => {
 };
 
 export default defineComponent({
-  name: 'AppPromisePresenter',
+  name: 'VlPromisePresenter',
   props: {
     value: {
       type: Object as PropType<PromiseAdapter<unknown[], unknown> | PromiseStore<unknown[], unknown>>,

@@ -4,7 +4,7 @@ import type { PropType, Slot, Slots, VNode } from 'vue';
 import type { AsyncPageStatus, BinderStatus, EnumerableBinderAdapter, IndexableBinderAdapter } from '@/composables/binders';
 import type { EnumerableBinderStore, IndexableBinderStore } from '@/stores/binderStore';
 
-const undefinedSlot = (status: BinderStatus | AsyncPageStatus) => (): VNode[] => [createCommentVNode(`app-binder-presenter:unresolved-slot-mapping:${status}`)];
+const undefinedSlot = (status: BinderStatus | AsyncPageStatus) => (): VNode[] => [createCommentVNode(`vl-binder-presenter:unresolved-slot-mapping:${status}`)];
 const pickSlot = (status: BinderStatus, slots: Slots): Slot => {
   switch (status) {
     case 'initial':
@@ -21,7 +21,7 @@ const pickSlot = (status: BinderStatus, slots: Slots): Slot => {
 };
 
 export default defineComponent({
-  name: 'AppBinderPresenter',
+  name: 'VlBinderPresenter',
   props: {
     value: {
       type: Object as PropType<

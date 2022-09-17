@@ -24,7 +24,7 @@ Velours exports multiple tools that are grouped into 2 different families:
 ### Promises
 - `usePromise` is a simple composable that turns any promise into a powerful state machine.
 - `definePromiseStore` is a pinia wrapper around `usePromise` when you want to cache data for an extended period of time.
-- `AppPromisePresenter` is a component that exposes the promise state machine with slots in your templates.
+- `VlPromisePresenter` is a component that exposes the promise state machine with slots in your templates.
 
 The promise state machine can extrapolate different high level concepts like having content or not, or the nuances
 between an initial load, refreshing existing data, or even retrying after an error occurred. All of this with only a few
@@ -32,7 +32,7 @@ slots (most of them being optional), and two methods.
 
 ```html
 <template>
-  <app-promise-presenter :value="user">
+  <vl-promise-presenter :value="user">
     <template #initial>
       <button @click="getUser(42)">Press me!</button>
     </template>
@@ -60,10 +60,10 @@ slots (most of them being optional), and two methods.
     <template #retrying>
       retrying...
     </template>
-  </app-promise-presenter>
+  </vl-promise-presenter>
 </template>
 <script setup lang="ts">
-import { usePromise } from '@endeavourapp/velours';
+import { usePromise, VlPromisePresenter } from 'velours';
 
 type User = { username: string };
 
@@ -81,7 +81,7 @@ const getUser = (id: number) => user.trigger(id);
 - `Bookmarks` are a value type to help you uniquely identify and query pages from paginated source. They can be offset based, page number based, or even token based.
 - `useEnumerableBinder` and `useIndexableBinder` are composables similar to `usePromise` that understands paginated sources.
 - `defineEnumerableBinderStore` and `defineIndexableBinderStore` are pinia wrappers around the two composable binders.
-- `AppBinderPresenter` and `AppBinderPagePresenter` are components that exposes the binder state machine with slots in your templates.
+- `VlBinderPresenter` and `VlBinderPagePresenter` are components that exposes the binder state machine with slots in your templates.
 - `useIntersectionObserver` is a composable to help turning enumerable binders into infinite scrolling experiences.
 
 Binders, while still very simple to use, have much more flexibility when dealing with chunked data sources. They provide
@@ -95,9 +95,9 @@ need a paginator in your UI. However, they cannot be used with progressive (toke
   <input type="search" v-model="searchQuery">
   <button @click="search(searchQuery)">Press me!</button>
   
-  <app-binder-presenter :value="results">
+  <vl-binder-presenter :value="results">
     <template #nested="{ pages }">
-      <app-binder-page-presenter v-for="page in pages" :value="page" :key="page.key">
+      <vl-binder-page-presenter v-for="page in pages" :value="page" :key="page.key">
         <template #loading>
           loading...
         </template>
@@ -110,7 +110,7 @@ need a paginator in your UI. However, they cannot be used with progressive (toke
         <template #error="{ error }">
           Oh no... {{error.bookmark}} {{error.message}}
         </template>
-      </app-binder-page-presenter>
+      </vl-binder-page-presenter>
     </template>
     <template #error="{error}">
       Oh no... {{error}}
@@ -118,13 +118,13 @@ need a paginator in your UI. However, they cannot be used with progressive (toke
     <template #retrying>
       retrying...
     </template>
-  </app-binder-presenter>
+  </vl-binder-presenter>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import type { Page } from '@endeavourapp/velours/composables/binders';
-import { useEnumerableBinder, Bookmarks as B } from '@endeavourapp/velours';
+import type { Page } from 'velours/composables/binders';
+import { useEnumerableBinder, Bookmarks as B, VlBinderPresenter, VlBinderPagePresenter } from 'velours';
 
 type User = { username: string };
 
