@@ -1,6 +1,6 @@
 {
   "name": "@endeavourapp/velours",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Soften your experience with asynchronous data in VueJs.",
   "author": {
     "name": "Etienne Maheu",
@@ -31,7 +31,7 @@
   "license": "MIT",
   "module": "velours.es.js",
   "main": "velours.es.js",
-  "types": "velours.es.d.ts",
+  "types": "index.d.ts",
   "type": "module",
   "scripts": {
     "dev": "vite",

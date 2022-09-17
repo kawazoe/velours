@@ -11,10 +11,7 @@ export default defineConfig({
   resolve: { alias: { '@': resolve(__dirname, './src') } },
   plugins: [
     vue(),
-    dts({
-      insertTypesEntry: true,
-      rollupTypes: true,
-    }),
+    dts({ insertTypesEntry: true }),
     viteStaticCopy({
       targets: [
         {
