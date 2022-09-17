@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/web-types.json",
   "name": "@endeavourapp/velours",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "framework": "vue",
   "js-types-syntax": "typescript",
   "description-markup": "markdown",

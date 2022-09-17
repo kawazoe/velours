@@ -1,20 +1,149 @@
 # Velours
 
-Soften your experience with asynchronous data in VueJs.
+Velours is a small, strongly typed library that attempts to patch the rough edges regarding asynchronous data flows in
+VueJS.
 
-## Vue 3 + TypeScript + Vite
+Other frameworks will often come with different sets of tools to simplify the use of promises and other observable data
+sources in templates. VueJS is very spartan by comparison, only providing some high level examples of how to integrate
+`fetch` with `ref`.
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Velours not only turns this conversion into a one-liner, but also provides some advanced state and error management in
+the process. Velours also comes with a whole abstraction for dealing with paginated data sources, completely
+automatically, no matter the kind of API you are using.
 
-## Recommended IDE Setup
+## Installation
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+Just what you would expect from any other npm package:
 
-## Type Support For `.vue` Imports in TS
+`npm install velours`
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+## Usage
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+Velours exports multiple tools that are grouped into 2 different families:
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+### Promises
+- `usePromise` is a simple composable that turns any promise into a powerful state machine.
+- `definePromiseStore` is a pinia wrapper around `usePromise` when you want to cache data for an extended period of time.
+- `AppPromisePresenter` is a component that exposes the promise state machine with slots in your templates.
+
+The promise state machine can extrapolate different high level concepts like having content or not, or the nuances
+between an initial load, refreshing existing data, or even retrying after an error occurred. All of this with only a few
+slots (most of them being optional), and two methods.
+
+```html
+<template>
+  <app-promise-presenter :value="user">
+    <template #initial>
+      <button @click="getUser(42)">Press me!</button>
+    </template>
+    <template #loading>
+      spinning...
+    </template>
+    <template #content="{value}">
+      User name is {{value.username}}
+
+      <button @click="getUser(42)">Press me again!</button>
+    </template>
+    <template #empty>
+      Could not find user.
+
+      <button @click="getUser(43)">Try another one!</button>
+    </template>
+    <template #error="{error}">
+      Oh no... {{error}}
+
+      <button @click="getUser(42)">It'll be better next time</button>
+    </template>
+    <template #refreshing>
+      refreshing...
+    </template>
+    <template #retrying>
+      retrying...
+    </template>
+  </app-promise-presenter>
+</template>
+<script setup lang="ts">
+import { usePromise } from '@endeavourapp/velours';
+
+type User = { username: string };
+
+// We give a promise factory to usePromise to let the state machine control the calls.
+const user = usePromise((id: number): Promise<User> =>
+  fetch(`https://example.com/user/${id}`).then(r => r.json())
+);
+
+// The trigger action knows which parameters are expected by the fetch call and will require them. 
+const getUser = (id: number) => user.trigger(id);
+</script>
+```
+
+### Binders
+- `Bookmarks` are a value type to help you uniquely identify and query pages from paginated source. They can be offset based, page number based, or even token based.
+- `useEnumerableBinder` and `useIndexableBinder` are composables similar to `usePromise` that understands paginated sources.
+- `defineEnumerableBinderStore` and `defineIndexableBinderStore` are pinia wrappers around the two composable binders.
+- `AppBinderPresenter` and `AppBinderPagePresenter` are components that exposes the binder state machine with slots in your templates.
+- `useIntersectionObserver` is a composable to help turning enumerable binders into infinite scrolling experiences.
+
+Binders, while still very simple to use, have much more flexibility when dealing with chunked data sources. They provide
+a similar state machine as `usePromise`, but expand the abstraction to deal with multiple pages at a time. Again, most
+slots are optional. This example covers the use of enumerable binders with relative (page number based) bookmarks.
+Indexable binders are used in a similar way, but have more features as they can directly index any page; useful when you
+need a paginator in your UI. However, they cannot be used with progressive (token based) bookmarks.
+
+```html
+<template>
+  <input type="search" v-model="searchQuery">
+  <button @click="search(searchQuery)">Press me!</button>
+  
+  <app-binder-presenter :value="results">
+    <template #nested="{ pages }">
+      <app-binder-page-presenter v-for="page in pages" :value="page" :key="page.key">
+        <template #loading>
+          loading...
+        </template>
+        <template #content="{ value }" v-for="entry in value" :key="entry.username">
+          {{entry.username}}
+        </template>
+        <template #empty>
+          No results.
+        </template>
+        <template #error="{ error }">
+          Oh no... {{error.bookmark}} {{error.message}}
+        </template>
+      </app-binder-page-presenter>
+    </template>
+    <template #error="{error}">
+      Oh no... {{error}}
+    </template>
+    <template #retrying>
+      retrying...
+    </template>
+  </app-binder-presenter>
+</template>
+<script setup lang="ts">
+import { ref } from 'vue';
+
+import type { Page } from '@endeavourapp/velours/composables/binders';
+import { useEnumerableBinder, Bookmarks as B } from '@endeavourapp/velours';
+
+type User = { username: string };
+
+const searchQuery = ref('');
+
+// Like with usePromise, we give a factory to useEnumerableBinder, but this time, it has two stages:
+// - one for the trigger parameters
+// - one for the bookmark, the page id, for the call
+const results = useEnumerableBinder((query: string) => (bookmark: B.RelativeBookmark | null): Promise<Page<User>> =>
+    fetch(`https://example.com/users?q=${query}&p=${bookmark?.page}&s=${bookmark?.pageSize}`).then(r => r.json())
+);
+
+let binder;
+const search = (query: string) => {
+  binder = results.bind(query);
+
+  // The state machine will keep track of what pages have been loaded, and which page is next in the list.
+  binder.next();
+}
+const more = () => binder.next();
+</script>
+```
