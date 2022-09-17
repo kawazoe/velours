@@ -1,0 +1,73 @@
+{
+  "name": "@endeavourapp/velours",
+  "version": "0.2.0",
+  "description": "Soften your experience with asynchronous data in VueJs.",
+  "author": {
+    "name": "Etienne Maheu",
+    "email": "contact@etiennemaheu.com",
+    "url": "https://etiennemaheu.com"
+  },
+  "keywords": [
+    "async",
+    "binder",
+    "bookmark",
+    "component",
+    "composable",
+    "paging",
+    "pinia",
+    "promise",
+    "store",
+    "vue",
+    "vuejs"
+  ],
+  "homepage": "https://github.com/kawazoe/velours",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kawazoe/velours.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kawazoe/velours/issues"
+  },
+  "license": "MIT",
+  "module": "velour.es.js",
+  "main": "velour.es.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "test": "vitest",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.ts,.vue src"
+  },
+  "dependencies": {
+    "nanoid": "^4.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitest/ui": "^0.23.2",
+    "@vue/eslint-config-typescript": "^11.0.1",
+    "@vue/test-utils": "^2.0.2",
+    "eslint": "^8.23.1",
+    "eslint-plugin-vue": "^9.5.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
+    "vite-plugin-dts": "^1.5.0",
+    "vite-plugin-static-copy": "^0.9.0",
+    "vitest": "^0.23.2",
+    "vue-tsc": "^0.40.4"
+  },
+  "peerDependencies": {
+    "pinia": "^2.0.0",
+    "vue": "^3.2.0"
+  },
+  "peerDependenciesMeta": {
+    "pinia": {
+      "optional": true
+    }
+  },
+  "web-types": [
+    "./web-types.json"
+  ]
+}
