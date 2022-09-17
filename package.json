@@ -29,8 +29,9 @@
     "url": "https://github.com/kawazoe/velours/issues"
   },
   "license": "MIT",
-  "module": "velour.es.js",
-  "main": "velour.es.js",
+  "module": "velours.es.js",
+  "main": "velours.es.js",
+  "types": "velours.es.d.ts",
   "type": "module",
   "scripts": {
     "dev": "vite",

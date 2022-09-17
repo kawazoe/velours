@@ -11,7 +11,10 @@ export default defineConfig({
   resolve: { alias: { '@': resolve(__dirname, './src') } },
   plugins: [
     vue(),
-    dts({ insertTypesEntry: true }),
+    dts({
+      insertTypesEntry: true,
+      rollupTypes: true,
+    }),
     viteStaticCopy({
       targets: [
         {
@@ -36,9 +39,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'velour',
+      name: 'velours',
       formats: ['es', 'umd'],
-      fileName: format => `velour.${format}.js`,
+      fileName: format => `velours.${format}.js`,
     },
     rollupOptions: {
       external: ['vue', 'pinia'],
