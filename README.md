@@ -19,7 +19,7 @@ Just what you would expect from any other npm package:
 
 ## Usage
 
-Velours exports multiple tools that are grouped into 2 different families:
+Velours export multiple tools that are grouped into 2 different families:
 
 ### Promises
 - `usePromise` is a simple composable that turns any promise into a powerful state machine.
@@ -145,5 +145,55 @@ const search = (query: string) => {
   binder.next();
 }
 const more = () => binder.next();
+</script>
+```
+
+### Convenience
+If importing components on every usage isn't something that tickles your fancy, Velours provides a Vue plugin that you
+can use to install them globally.
+
+```javascript
+import { createApp } from 'vue';
+import { Velours } from 'velours';  //< Start by importing Velours in your main file...
+
+import App from './App.vue';
+
+createApp(App)
+  .use(Velours)   //< ...then install the plugin like so to register all of Velours' components globally.
+  .mount('#app');
+```
+
+## Pinia integration
+Velours offer useful integrations with Pinia. Those functions can create entire Pinia stores for you with a similar API
+to their underlying composables. You might want to use these if you need to store some asynchronous states for an
+extended period of time in your application. For instance, maybe you need to preload some data from an API before your
+application can start. With Velours, you can easily create a promise store to handle this operation, and use the promise
+presenter to wrap part of your application UI; providing a failsafe if the call fails, and an easy way to display a
+loading indicator while your app starts.
+
+```javascript
+// stores.js
+export const useConfigStore = definePromiseStore('config', () => fetch('/config').then(r => r.json()));
+```
+
+```html
+<!-- App.vue -->
+<template>
+  <vl-promise-presenter :value="config">
+    <template>
+      <the-main-nav></the-main-nav>
+      <router-view></router-view>
+      <the-footer></the-footer>
+    </template>
+    <template #loading>
+      Getting ready...
+    </template>
+  </vl-promise-presenter>
+</template>
+<script setup>
+import { useConfigStore } from '@/stores';
+
+const config = useConfigStore();
+config.trigger();
 </script>
 ```
