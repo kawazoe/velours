@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/web-types.json",
-  "name": "@endeavourapp/velours",
-  "version": "0.3.4",
+  "name": "velours",
+  "version": "0.4.0",
   "framework": "vue",
   "js-types-syntax": "typescript",
   "description-markup": "markdown",
@@ -12,7 +12,7 @@
           "name": "vl-promise-presenter",
           "priority": "highest",
           "source": {
-            "module": "@endeavourapp/velours",
+            "module": "velours",
             "symbol": "VlPromisePresenter"
           },
           "description": "Selects the right template to render an `AsyncValue` based on its status.",
@@ -63,7 +63,7 @@
           "name": "vl-binder-presenter",
           "priority": "highest",
           "source": {
-            "module": "@endeavourapp/velours",
+            "module": "velours",
             "symbol": "VlBinderPresenter"
           },
           "description": "Selects the right template to render a `Binder` based on its status.",
@@ -107,7 +107,7 @@
           "name": "vl-binder-page-presenter",
           "priority": "highest",
           "source": {
-            "module": "@endeavourapp/velours",
+            "module": "velours",
             "symbol": "VlBinderPagePresenter"
           },
           "description": "Selects the right template to render an `AsyncPage` based on its status.",
