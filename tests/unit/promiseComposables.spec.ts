@@ -304,4 +304,71 @@ describe('Promise Composable', () => {
       expect(sut.error.value).toBe('failure2');
     });
   });
+
+  describe('Utilities', () => {
+    describe('Promise-like', () => {
+      it('should not resolve before entering content state', async () => {
+        const sut = usePromise(async () => 'success');
+
+        let called: unknown = false;
+        const promise = sut.toPromise().then(
+          result => {
+            called = result;
+          },
+          () => {
+            expect(true, 'should not be called').toBe(false);
+          },
+        );
+
+        const call = sut.trigger();
+        expect(called).toBe(false);
+
+        await call;
+        await promise;
+        expect(called).toBe('success');
+      });
+
+      it('should not resolve before entering empty state', async () => {
+        const sut = usePromise(async () => '');
+
+        let called: unknown = false;
+        const promise = sut.toPromise().then(
+          result => {
+            called = result;
+          },
+          () => {
+            expect(true, 'should not be called').toBe(false);
+          },
+        );
+
+        const call = sut.trigger();
+        expect(called).toBe(false);
+
+        await call;
+        await promise;
+        expect(called).toBe('');
+      });
+
+      it('should not reject before entering error state', async () => {
+        const sut = usePromise(async () => _throw('failed'));
+
+        let called: unknown = false;
+        const promise = sut.toPromise().then(
+          () => {
+            expect(true, 'should not be called').toBe(false);
+          },
+          result => {
+            called = result;
+          },
+        );
+
+        const call = sut.trigger();
+        expect(called).toBe(false);
+
+        await call;
+        await promise;
+        expect(called).toBe('failed');
+      });
+    });
+  });
 });

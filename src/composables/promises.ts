@@ -1,4 +1,4 @@
-import { computed, shallowRef } from 'vue';
+import { computed, shallowRef, watch } from 'vue';
 
 import { nanoid } from 'nanoid';
 
@@ -99,12 +99,30 @@ export function usePromise<P extends unknown[], V>(
       });
   }
 
+  function toPromise() {
+    return new Promise<V>((resolve, reject) => {
+      const handle = watch(state, ({ value, error, status }, { status: oldStatus }) => {
+        // Changed to content or empty from other
+        if ((status === 'content' || status === 'empty') && (oldStatus !== 'content' && oldStatus !== 'empty')) {
+          resolve(value as V);
+          handle();
+        }
+        // Changed to error from other
+        if (status === 'error' && oldStatus !== 'error') {
+          reject(error);
+          handle();
+        }
+      });
+    });
+  }
+
   return {
     state,
     status: computed(() => state.value.status),
     value: computed(() => state.value.value),
     error: computed(() => state.value.error),
     trigger,
+    toPromise,
   };
 }
 usePromise.defaultKeySelector = defaultKeySelector;
