@@ -2,8 +2,8 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 
 import type { Bookmark } from '@/bookmarks';
 
-import type { BinderComposableOptions, Metadata, Page } from '@/composables/binders';
-import { useEnumerableBinder, useIndexableBinder } from '@/composables/binders';
+import type { BinderComposableOptions, Metadata, Page } from '@/composables';
+import { useEnumerableBinder, useIndexableBinder } from '@/composables';
 
 export type EnumerableBinderStoreDefinition<P extends unknown[], V, Meta extends Metadata = Metadata> = ReturnType<typeof defineEnumerableBinderStore<P, V, Meta>>;
 export type EnumerableBinderStore<P extends unknown[], V, Meta extends Metadata = Metadata> = ReturnType<EnumerableBinderStoreDefinition<P, V, Meta>>;
