@@ -11,7 +11,7 @@ export default defineConfig({
   resolve: { alias: { '@': resolve(__dirname, './src') } },
   plugins: [
     vue(),
-    dts({ insertTypesEntry: true }),
+    dts(),
     viteStaticCopy({
       targets: [
         {
@@ -35,14 +35,27 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'velours',
-      formats: ['es', 'umd'],
-      fileName: format => `velours.${format}.js`,
+      entry: {
+        'velours': resolve(__dirname, 'src/index.ts'),
+        'stores/index': resolve(__dirname, 'src/stores/index.ts'),
+      },
+      name: '[name]',
+      formats: ['es'],
+      fileName: '[name].[format]',
     },
     rollupOptions: {
       external: ['vue', 'pinia'],
-      output: { globals: { vue: 'Vue' } },
+      output: {
+        globals: { vue: 'Vue' },
+        // manualChunks: {
+        //   'components': ['./components'],
+        //   'composables': ['./composables'],
+        // },
+        // manualChunks: id => {
+        //   console.log(id);
+        //   return 'test';
+        // },
+      },
     },
   },
 });
